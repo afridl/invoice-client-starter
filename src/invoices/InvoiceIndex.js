@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {apiDelete, apiGet} from "../utils/api";
-import "./InvoiceIndexStyle.css";
+
 import InvoiceTable from "./InvoiceTable";
 import InvoiceFilterForm from "./InvoiceFilterForm";
 
