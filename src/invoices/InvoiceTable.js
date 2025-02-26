@@ -19,6 +19,7 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                 <tr>
                     <th>#</th>
                     <th>Číslo faktury</th>
+                    <th>Produkt</th>
                     <th>Dodavatel</th>
                     <th>Odběratel</th>
                     <th>Cena</th>
@@ -30,6 +31,7 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                     <tr key={index + 1}>
                         <td>{index + 1}</td>
                         <td>{item.invoiceNumber}</td>
+                        <td>{item.product}</td>
                         <td >
                         <Link
                                 to={"/persons/show/" + item.seller._id}

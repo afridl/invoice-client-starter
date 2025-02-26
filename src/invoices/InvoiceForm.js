@@ -6,7 +6,7 @@ import {apiGet, apiPost, apiPut} from "../utils/api";
 import InputField from "../components/InputField";
 
 import FlashMessage from "../components/FlashMessage";
-import AsyncSelect from 'react-select/async';
+
 
 
 
@@ -51,6 +51,13 @@ const InvoiceForm = () => {
     
   }, [id]);
 
+  useEffect(() => {
+    setInvoice({...invoice, buyerId: invoice.buyer._id});
+  }, [invoice.buyer._id]);
+  useEffect(() => {
+    setInvoice({...invoice, sellerId: invoice.seller._id});
+  }, [invoice.seller._id]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(invoice);
@@ -75,6 +82,7 @@ const InvoiceForm = () => {
   if (!persons) {
     return <h1>Načítám...</h1>;
   }
+  
 
   return (
     <div>
@@ -92,6 +100,8 @@ const InvoiceForm = () => {
       <form onSubmit={handleSubmit}>
         <h2>Invoice Details</h2>
         <InputField
+          max={1000000000}
+
           label="Číslo faktury"
           type="number"
           name="invoiceNumber"
@@ -124,6 +134,7 @@ const InvoiceForm = () => {
           required={true}
         />
         <InputField
+          max={1000000000}
           label="Cena"
           type="number"
           name="price"
@@ -132,6 +143,7 @@ const InvoiceForm = () => {
           required={true}
         />
         <InputField
+          max={1000000000}
           label="DPH"
           type="number"
           name="vat"
@@ -146,56 +158,31 @@ const InvoiceForm = () => {
           value={invoice.note}
           handleChange={(e) => setInvoice({ ...invoice, note: e.target.value })}
           required={true}
-        />
-        <label>Dodavatel:</label>
-        <AsyncSelect
-          name="sellerId"
-          cacheOptions
+        />       
+        
+
+        
+        <InputField
           required={true}
-          defaultOptions
-          placeholder="Vyberte odběratele"
-          loadOptions={(inputValue, callback) => {
-            const filteredPersons = persons.filter((person) =>
-              person.name.toLowerCase().includes(inputValue.toLowerCase())
-            );
-            callback(
-              filteredPersons.map((person) => ({
-                label: `${person.name} IČ:${person.identificationNumber}`,
-                value: person._id,
-              }))
-            );
-          }}
-          onChange={(selectedOption) => {
-            setInvoice({ ...invoice, seller: { ...invoice.seller, _id: selectedOption.value } });
-            setInvoice({ ...invoice, sellerId: selectedOption.value });
-            console.log(selectedOption);
-            console.log(selectedOption.value);
-          }}
+          label="Dodavatel"
+          type="select"
+          name="seller"
+          prompt="Vyberte dodavatele"
+          value={invoice.seller._id}
+          options={persons}
+          handleChange={(e) => setInvoice({ ...invoice, seller: { ...invoice.seller, _id: e.target.value } })}
+               
         />
-        <label>Odběratel:</label>
-        <AsyncSelect
-          name="buyerId"
-          cacheOptions
+        <InputField
           required={true}
-          defaultOptions
-          placeholder="Vyberte odběratele"
-          loadOptions={(inputValue, callback) => {
-            const filteredPersons = persons.filter((person) =>
-              person.name.toLowerCase().includes(inputValue.toLowerCase())
-            );
-            callback(
-              filteredPersons.map((person) => ({
-                label: `${person.name} IČ:${person.identificationNumber}`,
-                value: person._id,
-              }))
-            );
-          }}
-          onChange={(selectedOption) => {
-            setInvoice({ ...invoice, buyer: { ...invoice.buyer, _id: selectedOption.value } });
-            setInvoice({ ...invoice, buyerId: selectedOption.value });
-            console.log(selectedOption);
-            console.log(selectedOption.value);
-          }}
+          label="Odběratel"
+          type="select"
+          name="buyer"
+          prompt="Vyberte odběratele"
+          value={invoice.buyer._id}
+          options={persons}
+          handleChange={(e) => setInvoice({ ...invoice, buyer: { ...invoice.buyer, _id: e.target.value } })}
+               
         />
         <p />
         <input type="submit" className="btn btn-primary" value="Uložit" />

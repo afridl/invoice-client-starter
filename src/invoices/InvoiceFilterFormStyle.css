@@ -1,3 +1,10 @@
 #filterForm {
     max-width: 500px;
 }
+.filter-sub-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+
+}

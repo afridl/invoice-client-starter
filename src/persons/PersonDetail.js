@@ -38,15 +38,21 @@ const PersonDetail = () => {
     const [sales, setSales] = useState();
     const [purchases, setPurchases] = useState();
     const navigate = useNavigate();
+    const [country, setCountry] = useState();
 
     useEffect(() => {
-        apiGet(`/api/persons/${id}`).then((data) => setPerson(data));        
+        apiGet(`/api/persons/${id}`).then((data) => setPerson(data));
+                
     }, [id]);
-    const country = Country.CZECHIA === person.country ? "Česká republika" : "Slovensko";
+    
 
     useEffect(() => {
-        apiGet(`/api/identification/${person.identificationNumber}/sales`).then((data) => setSales(data));
-        apiGet(`/api/identification/${person.identificationNumber}/purchases`).then((data) => setPurchases(data));
+        if(person)            
+            {   
+                setCountry ((Country.CZECHIA === person.country) ? "Česká republika" : "Slovensko");
+                apiGet(`/api/identification/${person.identificationNumber}/sales`).then((data) => setSales(data));
+                apiGet(`/api/identification/${person.identificationNumber}/purchases`).then((data) => setPurchases(data));
+            }
     }, [person]);
 
     const deleteInvoice = async (id) => {
@@ -73,7 +79,7 @@ const PersonDetail = () => {
     };
 
     if (!person) {
-        return null;
+        return <h1 className="text-danger">404 Osobnost nenalezena</h1>;
     }
     if(!sales) {
         return null;
@@ -81,6 +87,7 @@ const PersonDetail = () => {
     if(!purchases) {
         return null;
     }
+    
 
      
 
@@ -92,11 +99,11 @@ const PersonDetail = () => {
                     
                 </h1>
                 <hr />
-                <h3>{person.name} ({person.identificationNumber})</h3>
-                <Link to={"/persons/edit/" + id} className="btn btn-sm btn-warning">
+                <h3>{person.name} ({person.identificationNumber}) {person.hidden? <span className="text-danger">Smazaný záznam</span>:null}</h3>
+                <Link to={"/persons/edit/" + id} hidden={person.hidden} className="btn btn-sm btn-warning">
                         Upravit
                     </Link>
-                    <button onClick={() => deletePerson(id)} className="btn btn-sm btn-danger">
+                    <button hidden={person.hidden} onClick={() => deletePerson(id)} className="btn btn-sm btn-danger">
                         Odstranit
                     </button>
                 <p>
@@ -131,8 +138,8 @@ const PersonDetail = () => {
                 </p>
             </div>
             <span id="statisticsTables">
-                <InvoiceTable label="Prodeje" items={sales} deleteInvoice={deleteInvoice}></InvoiceTable>
-                <InvoiceTable label="Nákupy" items={purchases} deleteInvoice={deleteInvoice}></InvoiceTable>
+                {(sales.length)?<InvoiceTable  label="Prodeje" items={sales} deleteInvoice={deleteInvoice}></InvoiceTable>:null}
+                {(purchases.length)?<InvoiceTable label="Nákupy" items={purchases} deleteInvoice={deleteInvoice}></InvoiceTable>:null}
             </span>
         </>
     );

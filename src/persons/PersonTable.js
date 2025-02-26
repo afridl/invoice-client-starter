@@ -26,6 +26,9 @@ import {Link} from "react-router-dom";
 const PersonTable = ({label, items, deletePerson}) => {
     return (
         <div>
+            <Link to={"/persons/create"} className="btn btn-success">
+                Nová osoba
+            </Link>
             <p>
                 {label} {items.length}
             </p>
@@ -69,9 +72,7 @@ const PersonTable = ({label, items, deletePerson}) => {
                 ))}
                 </tbody>
             </table>
-            <Link to={"/persons/create"} className="btn btn-success">
-                Nová osoba
-            </Link>
+            
         </div>
     );
 };

@@ -33,23 +33,22 @@ const InvoiceIndex = () => {
 
     return (
         <div>
-            <span id="invoiceHeader">
-                <h1>Seznam faktur</h1>
-                
-            </span>
+            
+            <h1>Seznam faktur</h1>                
             
             <hr/>
             <h5>Filtr faktur:</h5>
             <InvoiceFilterForm handleSubmit={handleSubmit} />
-            <br/>
+            <hr/>
+            <Link to={"/invoices/create"} className="btn btn-success">
+                Nová faktura
+            </Link>
             <InvoiceTable
                 deleteInvoice={deleteInvoice}
                 items={invoices}
                 label="Počet osob:"
             />
-            <Link to={"/invoices/create"} className="btn btn-success">
-                Nová faktura
-            </Link>
+            
         </div>
     );
 };

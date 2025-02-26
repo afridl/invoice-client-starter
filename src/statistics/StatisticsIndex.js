@@ -13,7 +13,7 @@ export default function StatisticsIndex(){
         apiGet('/api/persons/statistics').then((data) => setPersonStatistics(data));
     }, []);
 
-    if (!invoiceStatistics) {
+    if (!invoiceStatistics || !personStatistics) {
 
         return (
         <div>
@@ -22,15 +22,7 @@ export default function StatisticsIndex(){
         </div>
         )
     }
-    if (!personStatistics) {
-
-        return (
-        <div>
-            <h1>Statistiky</h1>
-            <p>Načítám statistiky...</p>
-        </div>
-        )
-    }
+    
 
     return (
         <div>
@@ -66,8 +58,13 @@ export default function StatisticsIndex(){
                     {personStatistics.map((item, index) => (
                                         <tr key={index + 1}>
                                             <td>{index + 1}</td>
-                                            <td id="statisticsNameTd">{item.personName}  
-                                               </td>
+                                            <td id="statisticsNameTd">{item.personName} 
+                                                <Link
+                                                    to={"/persons/show/" + item.personId}
+                                                    className="btn btn-sm btn-info"
+                                                    >🔍
+                                                </Link> 
+                                            </td>
                                             <td align="right">{item.revenue} Kč</td>
                                         </tr>
                                     ))}

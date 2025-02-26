@@ -27,7 +27,7 @@ const InvoiceDetail = () => {
     
 
     if (!invoice) {
-        return null;
+        return <h1 className="text-danger">404 Faktura nenalezena</h1>;
     }
     if (!invoice.buyer) {
         return null;

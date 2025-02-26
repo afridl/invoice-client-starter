@@ -20,7 +20,7 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   BrowserRouter as Router,
@@ -28,6 +28,7 @@ import {
   Route,
   Routes,
   Navigate,
+  useNavigate
 } from "react-router-dom";
 
 import PersonIndex from "./persons/PersonIndex";
@@ -38,23 +39,38 @@ import InvoceDetail from "./invoices/InvoiceDetail";
 import InvoiceForm from "./invoices/InvoiceForm";
 import StatisticsIndex from "./statistics/StatisticsIndex";
 
-export function App() {
+
+
+
+function AppContent() {
+  const navigate = useNavigate();
+  
+
   return (
-    <Router>
+    
       <div className="container">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-md navbar-light bg-light">
           <ul className="navbar-nav mr-auto" id= "nav">
             <li className="nav-item">
               <Link to={"/persons"} className="nav-link">
                 Osoby
               </Link>
+            </li>
+            <li className="nav-item">
               <Link to={"/invoices"} className="nav-link">
                 Faktury
               </Link>
+            </li>
+            <li className="nav-item">
               <Link to={"/statistics"} className="nav-link">
                 Statistiky
               </Link>
-
+            </li>
+            <li>
+            <button className="btn btn-primary" onClick={() => navigate(-1)}>
+             ↶ Zpět
+            </button>
+            
             </li>
           </ul>
         </nav>
@@ -79,8 +95,15 @@ export function App() {
 
         </Routes>
       </div>
-    </Router>
+    
   );
 }
 
+export function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
 export default App;
